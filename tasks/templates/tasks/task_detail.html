@@ -1,0 +1,69 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}{{ task.title }} - Task Manager{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <h1 class="card-title">{{ task.title }}</h1>
+                    <span class="badge badge-{{ task.status }} fs-6">{{ task.get_status_display }}</span>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <p><strong>Priority:</strong> <span class="badge bg-info">{{ task.priority }}</span></p>
+                        <p><strong>Status:</strong> {{ task.get_status_display }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        {% if task.due_date %}
+                            <p><strong>Due Date:</strong> {{ task.due_date|date:"F d, Y H:i" }}</p>
+                        {% else %}
+                            <p><strong>Due Date:</strong> <span class="text-muted">Not set</span></p>
+                        {% endif %}
+                        <p><strong>Created:</strong> {{ task.created_at|date:"F d, Y H:i" }}</p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h5>Description</h5>
+                    {% if task.description %}
+                        <p>{{ task.description }}</p>
+                    {% else %}
+                        <p class="text-muted">No description provided.</p>
+                    {% endif %}
+                </div>
+
+                <div class="d-flex gap-2">
+                    <a href="{% url 'task_update' task.pk %}" class="btn btn-warning">Edit Task</a>
+                    <a href="{% url 'task_delete' task.pk %}" class="btn btn-danger">Delete Task</a>
+                    <a href="{% url 'task_list' %}" class="btn btn-secondary">Back to Tasks</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">Task Information</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <strong>ID:</strong> {{ task.id }}
+                    </li>
+                    <li class="mb-2">
+                        <strong>Created:</strong> {{ task.created_at|date:"M d, Y" }}
+                    </li>
+                    <li class="mb-2">
+                        <strong>Last Updated:</strong> {{ task.updated_at|date:"M d, Y" }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
